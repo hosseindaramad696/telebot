@@ -1,0 +1,28 @@
+name: Run Telegram Bot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */5 * * *'  # هر 5 ساعت خودکار ری‌استارت می‌شه
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install aiogram==3.7.0
+
+      - name: Run bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: python bot.py
